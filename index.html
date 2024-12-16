@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MUHAMMAD IBRAHIM BHAI</title>
+  <style>
+    /* General Body Styles */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('ibrahim.jpg') no-repeat center center fixed; /* Set your image URL */
+      background-size: cover;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: red;
+      margin-bottom: 20px;
+    }
+
+    /* Button Container Styles */
+    .button-container {
+      display: flex;
+      flex-direction: column; /* Buttons arranged vertically */
+      align-items: center;
+      gap: 15px; /* Space between buttons */
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 90%; /* Button width responsive */
+      max-width: 320px; /* Max width for larger screens */
+      min-height: 55px; /* Uniform height */
+      padding: 12px;
+      font-size: 1.2rem;
+      color: white;
+      background: orange;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(5, 5, 6, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      background-color: skyblue;
+      transform: scale(1.05); /* Subtle scaling effect */
+      box-shadow: 0 8px 16px rgba(5, 5, 6, 0.5); /* Enhance the shadow on hover */
+    }
+
+    /* Player Styles */
+    #player {
+      display: none;
+      width: 100%;
+      height: 400px;
+    }
+
+    /* Control Buttons */
+    .control-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px; /* Space between buttons */
+      margin-top: 20px;
+    }
+
+    .control-buttons button {
+      min-width: 160px; /* Uniform size for control buttons */
+      min-height: 55px;
+      font-size: 1.2rem;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .b1 {
+      background-color: red;
+    }
+
+    .b2 {
+      background-color: green;
+    }
+
+    .b1:hover, .b2:hover {
+      background-color: skyblue;
+      transform: scale(1.05);
+    }
+
+    /* Loading Message Styles */
+    #loadingMessage {
+      margin-top: 20px;
+      font-size: 1.3rem;
+      color: yellow;
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1 style="color:black;">Fan of <span style="color:orangered;">MUHAMMAD IBRAHIM</span> Gojol's</h1>
+  <h2 style="color:blue;">MADE BY IFTEE</h2>
+
+  <!-- Buttons for each video -->
+  <div class="button-container">
+    <button onclick="playAudio('16GxtAyuGqI')">আল্লাহু আল্লাহু আল্লাহু আল্লাহ......</button>
+    <button onclick="playAudio('Ij3tuZF-Y5U')">মাওলা ইয়া সাল্লি ওয়া সাল্লিম</button>
+    <button onclick="playAudio('1BAPXlwWVr8')">ত্রী ভুবনের প্রিয় মুহাম্মদ</button>
+    <button onclick="playAudio('kqXATFoK160')">নাতে রাসুল</button>
+    <button onclick="playAudio('BNVZIiQfW34')">আসুবুহু বাদা মিন</button>
+    <button onclick="playAudio('NP5KlYhgjew')">আল্লাহু আল্লাহু তুমি জাল্লে জালালু</button>
+  </div>
+
+  <!-- YouTube Iframe player (hidden initially) -->
+  <div id="player"></div>
+
+  <!-- Loading Message -->
+  <div id="loadingMessage">Loading... Please wait 3 seconds</div>
+
+  <!-- Control Buttons for 10 seconds forward and backward -->
+  <div class="control-buttons">
+    <button class="b1" onclick="seekVideo(-10)">Backward 10s</button>
+    <button class="b2" onclick="seekVideo(10)">Forward 10s</button>
+  </div>
+
+  <script>
+    // Load the YouTube IFrame API script
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Global player variable
+    var player;
+    var isPlayerReady = false;
+
+    // When the API is ready, create the player
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        videoId: '16GxtAyuGqI', // Default video ID (it will change based on the button clicked)
+        playerVars: {
+          'autoplay': 0, // Preload silently
+          'controls': 0,
+          'modestbranding': 1,
+          'rel': 0,
+          'showinfo': 0,
+          'mute': 1, // Mute to avoid noise during preload
+          'enablejsapi': 1
+        },
+        events: {
+          'onReady': onPlayerReady, // Trigger when the player is ready
+        }
+      });
+    }
+
+    // Function to handle player readiness
+    function onPlayerReady(event) {
+      isPlayerReady = true;
+      console.log('Player is ready!');
+    }
+
+    // Function to play selected audio
+    function playAudio(videoId) {
+      if (!isPlayerReady) {
+        alert("Player is not ready yet. Please wait.");
+        return;
+      }
+
+      // Show the loading message
+      var loadingMessage = document.getElementById('loadingMessage');
+      loadingMessage.style.display = 'block';
+
+      // Load and play the selected audio
+      document.getElementById('player').style.display = 'block'; // Show the player
+      player.loadVideoById(videoId); // Load the selected video
+      player.unMute(); // Ensure audio is unmuted
+
+      // Delay for 3 seconds before playing
+      setTimeout(function () {
+        player.playVideo(); // Play the video (audio will play)
+        loadingMessage.style.display = 'none'; // Hide the loading message
+      }, 3000);
+    }
+
+    // Function to seek video (move forward or backward by 10 seconds)
+    function seekVideo(seconds) {
+      if (!isPlayerReady) {
+        console.log("Player not ready yet!");
+        return;
+      }
+      var currentTime = player.getCurrentTime(); // Get the current playback time
+      player.seekTo(currentTime + seconds, true); // Move forward or backward by the given seconds
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
